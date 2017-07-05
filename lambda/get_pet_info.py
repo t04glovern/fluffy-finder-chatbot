@@ -1,19 +1,9 @@
 import boto3
 import requests
+
+# Local secret and configuration settings
 import secret
-
-
-animals = [
-    'barnyard',
-    'bird',
-    'cat',
-    'dog',
-    'horse',
-    'reptile',
-    'smallfurry'
-]
-
-petfinder_url = "http://api.petfinder.com/"
+import config
 
 
 def build_response(message):
@@ -31,7 +21,7 @@ def build_response(message):
 
 def lambda_handler(event, context):
     if 'ListPets' == event['currentIntent']['name']:
-        options = animals
+        options = config.petfinder_animal_types
         msg = ""
         for i, option in enumerate(options):
             msg += "{} - {}\n".format(i, option)
@@ -71,7 +61,7 @@ def lambda_handler(event, context):
             'size': animal_size
         }
 
-        r = requests.post((petfinder_url + petfinder_query), params=petfinder_payload)
+        r = requests.post((config.petfinder_url + petfinder_query), params=petfinder_payload)
         resp_data = r.json()
 
         text = ""
@@ -93,7 +83,7 @@ def lambda_handler(event, context):
             'animal': animal_type
         }
 
-        r = requests.post((petfinder_url + petfinder_query), params=petfinder_payload)
+        r = requests.post((config.petfinder_url + petfinder_query), params=petfinder_payload)
         resp_data = r.json()
 
         msg = ""

@@ -5,5 +5,4 @@
 *.swp
 secret.py
 __pycache__/
-builds/*
-builds/
+lambda-build.zip
