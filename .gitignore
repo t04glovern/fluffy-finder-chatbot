@@ -5,3 +5,5 @@
 *.swp
 secret.py
 __pycache__/
+builds/*
+builds/
