@@ -10,7 +10,7 @@ It aims to help people find animals that need love using Amazon LEX, Lambda and 
 
 ## Install
 
-#### Lambda `get_pet_info`
+### Lambda `get_pet_info`
 
 1. Generate a `petfinder` API key from `https://www.petfinder.com/developers/api-key`
 2. Create a `secret.py` file to replace the `secret-example.py` file in the `lambda/` directory
@@ -25,6 +25,13 @@ Role:           Choose an existing role (this bit is up to you though)
 Existing Role:  lambda_basic_execution
 Description:    Functions used to get pet info
 ```
+
+### Bot
+
+#### Exporting bot-definition
+
+1. Change the `ACTIVATE_PATH=` line to a python2.7 interpreter or virtualenv
+2. Run the `export-chatbot.sh` script to generate the `bot-definition-export.json` file in the `lex/` directory
 
 ## Contributing
 
