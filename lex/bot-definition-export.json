@@ -3,7 +3,15 @@
     "abortStatement": {
       "messages": [
         {
-          "content": "Sorry, I could not understand. Goodbye.", 
+          "content": "I hope you found a little critter that will help brighten up any day!", 
+          "contentType": "PlainText"
+        }, 
+        {
+          "content": "When you adopt or foster animals, you give that little critter another chance", 
+          "contentType": "PlainText"
+        }, 
+        {
+          "content": "I hope you found your new best friend!", 
           "contentType": "PlainText"
         }
       ]
@@ -13,13 +21,29 @@
       "maxAttempts": 5, 
       "messages": [
         {
-          "content": "Sorry, can you please repeat that?", 
+          "content": "I'm sorry Rex, I'm afraid I can't do that..... yet! type 'help' for more info", 
+          "contentType": "PlainText"
+        }, 
+        {
+          "content": "Ooops! I don't think I can do that, If you type 'help' I can help you better.", 
+          "contentType": "PlainText"
+        }, 
+        {
+          "content": "I'm so sorry, but I don't quite know what you mean, if you type 'help' I might be able understand you more!", 
+          "contentType": "PlainText"
+        }, 
+        {
+          "content": "Need some help? Just type 'help'", 
           "contentType": "PlainText"
         }
       ]
     }, 
     "idleSessionTTLInSeconds": 60, 
     "intents": [
+      {
+        "intentName": "GetHelpWithPets", 
+        "intentVersion": "$LATEST"
+      }, 
       {
         "intentName": "ListPets", 
         "intentVersion": "$LATEST"
@@ -39,15 +63,42 @@
   }, 
   "intents": [
     {
-      "confirmationPrompt": {
-        "maxAttempts": 3, 
-        "messages": [
-          {
-            "content": "We're going to search for a {pet_sizes} pet that makes a {pet_sounds} sound. Is this correct?", 
-            "contentType": "PlainText"
-          }
-        ]
+      "fulfillmentActivity": {
+        "codeHook": {
+          "messageVersion": "1.0", 
+          "uri": "arn:aws:lambda:us-east-1:277790246569:function:get_pet_info"
+        }, 
+        "type": "CodeHook"
       }, 
+      "name": "GetHelpWithPets", 
+      "sampleUtterances": [
+        "help", 
+        "help me", 
+        "HELP", 
+        "What are you"
+      ], 
+      "slots": [
+        {
+          "name": "fluffy_option", 
+          "priority": 1, 
+          "sampleUtterances": [], 
+          "slotConstraint": "Required", 
+          "slotType": "fluffy_finder_options", 
+          "slotTypeVersion": "$LATEST", 
+          "valueElicitationPrompt": {
+            "maxAttempts": 2, 
+            "messages": [
+              {
+                "content": "How can I help you?", 
+                "contentType": "PlainText"
+              }
+            ], 
+            "responseCard": "{\"version\":1,\"contentType\":\"application/vnd.amazonaws.card.generic\",\"genericAttachments\":[{\"imageUrl\":\"http://i.imgur.com/oBYqUId.png\",\"subTitle\":\"How can I help?\",\"title\":\"Meow! I'm here to help you find that special friend!\",\"buttons\":[{\"text\":\"What types of pets are there?\",\"value\":\"list_pet_types\"},{\"text\":\"Help me choose!\",\"value\":\"find_me_random\"},{\"text\":\"I'd love to help in other ways!\",\"value\":\"how_can_i_help\"}]}]}"
+          }
+        }
+      ]
+    }, 
+    {
       "fulfillmentActivity": {
         "codeHook": {
           "messageVersion": "1.0", 
@@ -56,14 +107,6 @@
         "type": "CodeHook"
       }, 
       "name": "GetMyPetMatch", 
-      "rejectionStatement": {
-        "messages": [
-          {
-            "content": "No problem, maybe we'll search for you another time!", 
-            "contentType": "PlainText"
-          }
-        ]
-      }, 
       "sampleUtterances": [
         "Find my perfect match", 
         "Find me perfect pet", 
@@ -177,6 +220,21 @@
         }
       ], 
       "name": "pet_sounds"
+    }, 
+    {
+      "description": "Fluffy Finder options ", 
+      "enumerationValues": [
+        {
+          "value": "find_me_random"
+        }, 
+        {
+          "value": "list_pet_types"
+        }, 
+        {
+          "value": "how_can_i_help"
+        }
+      ], 
+      "name": "fluffy_finder_options"
     }, 
     {
       "description": "Pet Size types", 
