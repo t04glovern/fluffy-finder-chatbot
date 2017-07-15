@@ -6,5 +6,6 @@ cd lambda
 mkdir build
 pip3 install requests -t build
 cp * build
-zip -r ../builds/lambda-build.zip build
-rm -rf build
+cd build
+zip -r ../../builds/lambda-build.zip *
+rm -rf ../build

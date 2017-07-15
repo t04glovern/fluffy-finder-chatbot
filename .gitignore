@@ -3,6 +3,5 @@
 *.pyc
 *~
 *.swp
-secret.py
 __pycache__/
 lambda-build.zip
