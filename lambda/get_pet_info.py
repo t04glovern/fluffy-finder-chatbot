@@ -8,43 +8,34 @@ import config
 
 # Logging
 logger = logging.getLogger()
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.ERROR)
 
 
-class LexEvent:
-    def __init__(self, event):
-        self.event = event
-        self.slots = event['currentIntent']['slots']
-        self.intent = event['currentIntent']['name']
-        self.input_text = event['inputTranscript']
-        self.sess_attr = event['sessionAttributes']
-        self.invocation = event['invocationSource']
-
-    def build_response(self, message):
-        return {
-            'sessionAttributes': self.sess_attr,
-            "dialogAction": {
-                "type": "Close",
-                "fulfillmentState": "Fulfilled",
-                "message": {
-                    "contentType": "PlainText",
-                    "content": message
-                }
+def build_response(msg):
+    return {
+        "dialogAction": {
+            "type": "Close",
+            "fulfillmentState": "Fulfilled",
+            "message": {
+                "contentType": "PlainText",
+                "content": msg
             }
         }
+    }
 
 
-def list_pets(lex):
+def list_pets():
     options = config.petfinder_animal_types
     msg = ""
+    msg += "_Hint: I want a `cat`_\n\n*Pet Types*:\n"
     for i, option in enumerate(options):
-        msg += "{} - {}\n".format(i, option)
-    return lex.build_response(msg)
+        msg += "{}\n".format(option)
+    return build_response(msg)
 
 
-def my_perfect_match(lex):
-    pet_size = lex.slots['pet_sizes']
-    pet_sound = lex.slots['pet_sounds']
+def my_perfect_match(event):
+    pet_size = event['currentIntent']['slots']['pet_sizes']
+    pet_sound = event['currentIntent']['slots']['pet_sounds']
 
     animal_type = None
     animal_size = None
@@ -82,16 +73,58 @@ def my_perfect_match(lex):
     text = ""
     animal_name = resp_data['petfinder']['pet']['name']['$t']
     animal_type = resp_data['petfinder']['pet']['animal']['$t']
+    animal_options = ""
+    if resp_data['petfinder']['pet']['options']['option']:
+        for option in resp_data['petfinder']['pet']['options']['option']:
+            animal_options += (option['$t'] + "\n")
+    else:
+        animal_options = "N/A"
     animal_description = resp_data['petfinder']['pet']['description']['$t']
-    animal_photos = resp_data['petfinder']['pet']['media']['photos']['photo'][3]['$t']
-    text += "*Name:* {}\n*Type:* {}\n*Photo:* {}\n\n*Description:* {}".format(animal_name, animal_type, animal_photos,
-                                                                              animal_description)
+    if resp_data['petfinder']['pet']['media']:
+        animal_photos = resp_data['petfinder']['pet']['media']['photos']['photo'][3]['$t']
+    else:
+        animal_photos = "No Photos Attached"
+    text += "*Name:* {}\n*Type:* {}\n*Photo:* {}\n*Key Info:* \n{}\n\n*Description:* {}".format(animal_name, animal_type, animal_photos, animal_options, animal_description)
 
-    return lex.build_response(text)
+    return build_response(text)
 
 
-def pet_info(lex):
-    animal_type = lex.slots['animal_type']
+def get_pet_breed(animal_type, animal_breed):
+    text = "Sure!, let's find you a `" + animal_breed + " " + animal_type + "`\n\n"
+
+    petfinder_query = "pet.getRandom"
+    petfinder_payload = {
+        'key': secret.PETFINDER_API_KEY,
+        'format': 'json',
+        'output': 'basic',
+        'animal': animal_type,
+        'breed': animal_breed
+    }
+
+    r = requests.post((config.petfinder_url + petfinder_query), params=petfinder_payload)
+    resp_data = r.json()
+
+    animal_name = resp_data['petfinder']['pet']['name']['$t']
+    animal_type = resp_data['petfinder']['pet']['animal']['$t']
+    animal_options = ""
+    if resp_data['petfinder']['pet']['options']['option']:
+        for option in resp_data['petfinder']['pet']['options']['option']:
+            animal_options += (option['$t'] + "\n")
+    else:
+        animal_options = "N/A"
+    animal_description = resp_data['petfinder']['pet']['description']['$t']
+    animal_photos = ""
+    if resp_data['petfinder']['pet']['media']:
+        animal_photos = resp_data['petfinder']['pet']['media']['photos']['photo'][3]['$t']
+    else:
+        animal_photos = "No Photos Attached"
+    text += "*Name:* {}\n*Type:* {}\n*Photo:* {}\n*Key Info:* \n{}\n\n*Description:* {}".format(animal_name, animal_type, animal_photos, animal_options, animal_description)
+
+    return build_response(text)
+
+
+def pet_info(event):
+    animal_type = event['currentIntent']['slots']['animal_type']
 
     petfinder_query = "breed.list"
     petfinder_payload = {
@@ -103,52 +136,62 @@ def pet_info(lex):
     r = requests.post((config.petfinder_url + petfinder_query), params=petfinder_payload)
     resp_data = r.json()
 
-    msg = ""
-    for breed in resp_data['petfinder']['breeds']['breed']:
-        msg += "{}\n".format(breed)
-    return lex.build_response(msg)
+    if event['currentIntent']['slots']['animal_breed']:
+        for breed in resp_data['petfinder']['breeds']['breed']:
+            if event['currentIntent']['slots']['animal_breed'] == breed['$t']:
+                return get_pet_breed(animal_type, event['currentIntent']['slots']['animal_breed'])
+    else:
+        msg = "Here is a list of `" + animal_type + "` breeds!\n\n" + "*Hint*: _I want a " + \
+              resp_data['petfinder']['breeds']['breed'][0]['$t'] + " breed of " + animal_type + "_\n\n"
+        for breed in resp_data['petfinder']['breeds']['breed']:
+            msg += "`{}`, ".format(breed['$t'])
+        return build_response(msg)
 
 
-def get_help(lex):
-    option_selected = lex.slots['fluffy_option']
+def get_help(event):
+    option_selected = event['currentIntent']['slots']['fluffy_option']
 
     if option_selected == "list_pet_types":
-        return lex.build_response("type: What pets are available?")
+        return build_response("*Type*: _What pets are available?_")
     if option_selected == "find_me_random":
-        return lex.build_response("type: Find my perfect pet?")
+        return build_response("*Type*: _Find my perfect pet_")
     if option_selected == "how_can_i_help":
-        return lex.build_response("Fostering animals is a great way to help without making long term commitments!")
+        return build_response("Fostering animals is a great way to help without making long term commitments!")
     else:
-        return not_understood(lex)
+        return not_understood(event)
 
 
-def not_understood(lex):
-    return lex.fulfill("You're going to have to be more clear sorry.")
+def not_understood(event):
+    return build_response("You're going to have to be more clear sorry.")
 
 
-def fluffy_functions(lex):
-
-    if lex.intent == "ListPets":
-        return list_pets(lex)
-    if lex.intent == "GetMyPetMatch":
-        return my_perfect_match(lex)
-    if lex.intent == "GetPetInfo":
-        return pet_info(lex)
-    if lex.intent == "GetHelpWithPets":
-        return get_help(lex)
+def fluffy_functions(event):
+    if event['currentIntent']['name'] == "ListPets":
+        return list_pets()
+    if event['currentIntent']['name'] == "GetMyPetMatch":
+        return my_perfect_match(event)
+    if event['currentIntent']['name'] == "GetPetInfo":
+        return pet_info(event)
+    if event['currentIntent']['name'] == "GetHelpWithPets":
+        return get_help(event)
     else:
-        return not_understood(lex)
+        return not_understood(event)
 
 
 def lambda_handler(event, context=None):
-    lex = LexEvent(event)
     logger.info(('IN', event))
 
+    '''
+    slots = event['currentIntent']['slots']
+    intent = event['currentIntent']['name']
+    input_text = event['inputTranscript']
+    sess_attr = event['sessionAttributes']
+    invocation = event['invocationSource']
+    '''
+
     try:
-        res = fluffy_functions(lex)
+        res = fluffy_functions(event)
         logger.info(('OUT', res))
         return res
     except Exception as e:
         logger.error(e)
-
-

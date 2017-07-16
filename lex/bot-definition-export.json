@@ -75,7 +75,9 @@
         "help", 
         "help me", 
         "HELP", 
-        "What are you"
+        "What are you", 
+        "hi", 
+        "hello"
       ], 
       "slots": [
         {
@@ -93,7 +95,7 @@
                 "contentType": "PlainText"
               }
             ], 
-            "responseCard": "{\"version\":1,\"contentType\":\"application/vnd.amazonaws.card.generic\",\"genericAttachments\":[{\"imageUrl\":\"http://i.imgur.com/oBYqUId.png\",\"subTitle\":\"How can I help?\",\"title\":\"Meow! I'm here to help you find that special friend!\",\"buttons\":[{\"text\":\"What types of pets are there?\",\"value\":\"list_pet_types\"},{\"text\":\"Help me choose!\",\"value\":\"find_me_random\"},{\"text\":\"I'd love to help in other ways!\",\"value\":\"how_can_i_help\"}]}]}"
+            "responseCard": "{\"version\":1,\"contentType\":\"application/vnd.amazonaws.card.generic\",\"genericAttachments\":[{\"imageUrl\":\"http://i.imgur.com/oBYqUId.png\",\"subTitle\":\"How can I help?\",\"title\":\"Meow! I'm here to help you find that special friend!\",\"buttons\":[{\"text\":\"List types\",\"value\":\"list_pet_types\"},{\"text\":\"Help me choose!\",\"value\":\"find_me_random\"},{\"text\":\"Fostering?\",\"value\":\"how_can_i_help\"}]}]}"
           }
         }
       ]
@@ -129,7 +131,7 @@
                 "contentType": "PlainText"
               }
             ], 
-            "responseCard": "{\"version\":1,\"contentType\":\"application/vnd.amazonaws.card.generic\",\"genericAttachments\":[{\"imageUrl\":\"http://i.imgur.com/oKnwkgA.png\",\"subTitle\":\"What sound does your new friend make?\",\"title\":\"Pet Sound\",\"buttons\":[{\"text\":\"Woof\",\"value\":\"Woof\"},{\"text\":\"Meow\",\"value\":\"Meow\"},{\"text\":\"Chirp\",\"value\":\"Chirp\"},{\"text\":\"Hiss\",\"value\":\"Hiss\"}]}]}"
+            "responseCard": "{\"version\":1,\"contentType\":\"application/vnd.amazonaws.card.generic\",\"genericAttachments\":[{\"imageUrl\":\"http://i.imgur.com/oBYqUId.png\",\"subTitle\":\"What sound does your new friend make?\",\"title\":\"Pet Sound\",\"buttons\":[{\"text\":\"Woof\",\"value\":\"Woof\"},{\"text\":\"Meow\",\"value\":\"Meow\"},{\"text\":\"Chirp\",\"value\":\"Chirp\"},{\"text\":\"Hiss\",\"value\":\"Hiss\"}]}]}"
           }
         }, 
         {
@@ -147,7 +149,7 @@
                 "contentType": "PlainText"
               }
             ], 
-            "responseCard": "{\"version\":1,\"contentType\":\"application/vnd.amazonaws.card.generic\",\"genericAttachments\":[{\"imageUrl\":\"http://i.imgur.com/d5CqkQB.png\",\"subTitle\":\"Do you want a small and agile or a tubby but cuddly friend?\",\"title\":\"Pet Size\",\"buttons\":[{\"text\":\"Small\",\"value\":\"Small\"},{\"text\":\"Medium\",\"value\":\"Medium\"},{\"text\":\"Large\",\"value\":\"Large\"},{\"text\":\"Extra-Large\",\"value\":\"Extra-Large\"}]}]}"
+            "responseCard": "{\"version\":1,\"contentType\":\"application/vnd.amazonaws.card.generic\",\"genericAttachments\":[{\"imageUrl\":\"http://i.imgur.com/oBYqUId.png\",\"subTitle\":\"Do you want a small and agile or a tubby but cuddly friend?\",\"title\":\"Pet Size\",\"buttons\":[{\"text\":\"Small\",\"value\":\"Small\"},{\"text\":\"Medium\",\"value\":\"Medium\"},{\"text\":\"Large\",\"value\":\"Large\"},{\"text\":\"Extra-Large\",\"value\":\"Extra-Large\"}]}]}"
           }
         }
       ]
@@ -179,10 +181,27 @@
       "name": "GetPetInfo", 
       "sampleUtterances": [
         "Find me {animal_type}", 
-        "I'm looking for {animal_type}", 
-        "I want a {animal_type}"
+        "I'm looking for a {animal_type}", 
+        "I want a {animal_type}", 
+        "I want a {animal_breed} breed of {animal_type}"
       ], 
       "slots": [
+        {
+          "name": "animal_breed", 
+          "priority": 2, 
+          "sampleUtterances": [], 
+          "slotConstraint": "Optional", 
+          "slotType": "AMAZON.Animal", 
+          "valueElicitationPrompt": {
+            "maxAttempts": 2, 
+            "messages": [
+              {
+                "content": "What animal breed?", 
+                "contentType": "PlainText"
+              }
+            ]
+          }
+        }, 
         {
           "name": "animal_type", 
           "priority": 1, 

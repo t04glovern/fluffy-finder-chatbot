@@ -8,4 +8,5 @@ pip3 install requests -t build
 cp * build
 cd build
 zip -r ../../builds/lambda-build.zip *
-rm -rf ../build
+cd ..
+rm -rf build

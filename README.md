@@ -26,6 +26,8 @@ Existing Role:  lambda_basic_execution
 Description:    Functions used to get pet info
 ```
 
+You can run `aws lambda update-function-code --function-name "get_pet_info" --zip-file fileb://builds/lambda-build.zip` from the root directory to update the code
+
 ### Lex Bot Overview
 
 #### Bot
@@ -34,17 +36,13 @@ Description:    Functions used to get pet info
 
 #### Intents
 
-**Name:** GetMyPetMatch
+**Name:** GetHelpWithPets
 
-<p align="center"><img width=80%% src="https://github.com/t04glovern/fluffy-finder-chatbot/blob/master/images/bot-image-01.png"></p>
+**Name:** GetMyPetMatch
 
 **Name:** GetPetInfo
 
-<p align="center"><img width=80%% src="https://github.com/t04glovern/fluffy-finder-chatbot/blob/master/images/bot-image-02.png"></p>
-
 **Name:** ListPets
-
-<p align="center"><img width=80%% src="https://github.com/t04glovern/fluffy-finder-chatbot/blob/master/images/bot-image-03.png"></p>
 
 ### Exporting bot-definition
 
