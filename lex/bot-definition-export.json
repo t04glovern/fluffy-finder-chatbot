@@ -131,7 +131,7 @@
                 "contentType": "PlainText"
               }
             ], 
-            "responseCard": "{\"version\":1,\"contentType\":\"application/vnd.amazonaws.card.generic\",\"genericAttachments\":[{\"imageUrl\":\"http://i.imgur.com/oBYqUId.png\",\"subTitle\":\"What sound does your new friend make?\",\"title\":\"Pet Sound\",\"buttons\":[{\"text\":\"Woof\",\"value\":\"Woof\"},{\"text\":\"Meow\",\"value\":\"Meow\"},{\"text\":\"Chirp\",\"value\":\"Chirp\"},{\"text\":\"Hiss\",\"value\":\"Hiss\"}]}]}"
+            "responseCard": "{\"version\":1,\"contentType\":\"application/vnd.amazonaws.card.generic\",\"genericAttachments\":[{\"imageUrl\":\"http://i.imgur.com/Dos9Ndg.png\",\"subTitle\":\"What sound does your new friend make?\",\"title\":\"Pet Sound\",\"buttons\":[{\"text\":\"Woof\",\"value\":\"Woof\"},{\"text\":\"Meow\",\"value\":\"Meow\"},{\"text\":\"Chirp\",\"value\":\"Chirp\"},{\"text\":\"Hiss\",\"value\":\"Hiss\"}]}]}"
           }
         }, 
         {
@@ -149,7 +149,7 @@
                 "contentType": "PlainText"
               }
             ], 
-            "responseCard": "{\"version\":1,\"contentType\":\"application/vnd.amazonaws.card.generic\",\"genericAttachments\":[{\"imageUrl\":\"http://i.imgur.com/oBYqUId.png\",\"subTitle\":\"Do you want a small and agile or a tubby but cuddly friend?\",\"title\":\"Pet Size\",\"buttons\":[{\"text\":\"Small\",\"value\":\"Small\"},{\"text\":\"Medium\",\"value\":\"Medium\"},{\"text\":\"Large\",\"value\":\"Large\"},{\"text\":\"Extra-Large\",\"value\":\"Extra-Large\"}]}]}"
+            "responseCard": "{\"version\":1,\"contentType\":\"application/vnd.amazonaws.card.generic\",\"genericAttachments\":[{\"imageUrl\":\"http://i.imgur.com/DuGadMO.png\",\"subTitle\":\"Do you want a small and agile or a tubby but cuddly friend?\",\"title\":\"Pet Size\",\"buttons\":[{\"text\":\"Small\",\"value\":\"Small\"},{\"text\":\"Medium\",\"value\":\"Medium\"},{\"text\":\"Large\",\"value\":\"Large\"},{\"text\":\"Extra-Large\",\"value\":\"Extra-Large\"}]}]}"
           }
         }
       ]
