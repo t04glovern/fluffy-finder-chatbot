@@ -71,22 +71,9 @@ def my_perfect_match(event):
     resp_data = r.json()
 
     text = ""
-    animal_name = resp_data['petfinder']['pet']['name']['$t']
-    animal_type = resp_data['petfinder']['pet']['animal']['$t']
-    animal_options = ""
-    if resp_data['petfinder']['pet']['options']['option']:
-        for option in resp_data['petfinder']['pet']['options']['option']:
-            animal_options += (option['$t'] + "\n")
-    else:
-        animal_options = "N/A"
-    animal_description = resp_data['petfinder']['pet']['description']['$t']
-    if resp_data['petfinder']['pet']['media']:
-        animal_photos = resp_data['petfinder']['pet']['media']['photos']['photo'][3]['$t']
-    else:
-        animal_photos = "No Photos Attached"
-    text += "*Name:* {}\n*Type:* {}\n*Photo:* {}\n*Key Info:* \n{}\n\n*Description:* {}".format(animal_name, animal_type, animal_photos, animal_options, animal_description)
+    msg = generate_output(text, resp_data)
 
-    return build_response(text)
+    return build_response(msg)
 
 
 def get_pet_breed(animal_type, animal_breed):
@@ -104,23 +91,9 @@ def get_pet_breed(animal_type, animal_breed):
     r = requests.post((config.petfinder_url + petfinder_query), params=petfinder_payload)
     resp_data = r.json()
 
-    animal_name = resp_data['petfinder']['pet']['name']['$t']
-    animal_type = resp_data['petfinder']['pet']['animal']['$t']
-    animal_options = ""
-    if resp_data['petfinder']['pet']['options']['option']:
-        for option in resp_data['petfinder']['pet']['options']['option']:
-            animal_options += (option['$t'] + "\n")
-    else:
-        animal_options = "N/A"
-    animal_description = resp_data['petfinder']['pet']['description']['$t']
-    animal_photos = ""
-    if resp_data['petfinder']['pet']['media']:
-        animal_photos = resp_data['petfinder']['pet']['media']['photos']['photo'][3]['$t']
-    else:
-        animal_photos = "No Photos Attached"
-    text += "*Name:* {}\n*Type:* {}\n*Photo:* {}\n*Key Info:* \n{}\n\n*Description:* {}".format(animal_name, animal_type, animal_photos, animal_options, animal_description)
+    msg = generate_output(text, resp_data)
 
-    return build_response(text)
+    return build_response(msg)
 
 
 def pet_info(event):
@@ -156,13 +129,39 @@ def get_help(event):
     if option_selected == "find_me_random":
         return build_response("*Type*: _Find my perfect pet_")
     if option_selected == "how_can_i_help":
-        return build_response("Fostering animals is a great way to help without making long term commitments!")
+        return build_response("*Yay!*\nFostering animals is a great way to help without making long term commitments!\n\n*Cat Haven*: https://www.cathaven.com.au/services/")
     else:
         return not_understood(event)
 
 
 def not_understood(event):
     return build_response("You're going to have to be more clear sorry.")
+
+
+def generate_output(init_text, resp_data):
+    text = init_text
+
+    animal_name = resp_data['petfinder']['pet']['name']['$t']
+    animal_type = resp_data['petfinder']['pet']['animal']['$t']
+    animal_options = ""
+    if resp_data['petfinder']['pet']['options']['option']:
+        if isinstance(resp_data['petfinder']['pet']['options']['option'], list):
+            for option in resp_data['petfinder']['pet']['options']['option']:
+                animal_options += (config.petfinder_animal_options[option['$t']] + "\n")
+        else:
+            animal_options += (config.petfinder_animal_options[resp_data['petfinder']['pet']['options']['option']['$t']] + "\n")
+    else:
+        animal_options = "N/A"
+    animal_description = resp_data['petfinder']['pet']['description']['$t']
+    animal_photos = ""
+    if resp_data['petfinder']['pet']['media']:
+        animal_photos = resp_data['petfinder']['pet']['media']['photos']['photo'][3]['$t']
+    else:
+        animal_photos = "No Photos Attached"
+    text += "*Name:* {}\n*Type:* {}\n*Photo:* {}\n*Key Info:* \n{}\n\n*Description:* \n{}".format(animal_name, animal_type, animal_photos, animal_options, animal_description)
+
+    return text
+
 
 
 def fluffy_functions(event):

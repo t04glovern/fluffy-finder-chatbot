@@ -38,7 +38,8 @@
         }
       ]
     }, 
-    "idleSessionTTLInSeconds": 60, 
+    "description": "Connecting loving homes with loving animals", 
+    "idleSessionTTLInSeconds": 300, 
     "intents": [
       {
         "intentName": "GetHelpWithPets", 
