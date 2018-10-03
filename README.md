@@ -2,6 +2,9 @@
 [![GitHub Issues](https://img.shields.io/github/issues/t04glovern/fluffy-finder-chatbot.svg)](https://github.com/t04glovern/fluffy-finder-chatbot/issues)
 ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)
 
+# What exactly is a chatbot?
+A chatbot is an artificial intelligence (AI) software that can simulate a conversation (or a chat) with a user in natural language through messaging applications, websites, mobile apps or through the telephone.
+
 Chatbot for the AWS chatbot challenge 2017.
 
 <p align="center"><img width=60%% src="https://github.com/t04glovern/fluffy-finder-chatbot/blob/master/images/demo-01.png"></p>
