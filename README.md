@@ -35,17 +35,22 @@ You can run `aws lambda update-function-code --function-name "get_pet_info" --zi
 
 #### Bot
 
-> **Name:** FluffyFinder
+> **Name:**
+>       FluffyFinder
 
 #### Intents
 
-> **Name:** GetHelpWithPets
-
-> **Name:** GetMyPetMatch
-
-> **Name:** GetPetInfo
-
-> **Name:** ListPets
+> **Name:**
+>   GetHelpWithPets
+>
+> **Name:**
+>   GetMyPetMatch
+>
+> **Name:**
+>   GetPetInfo
+>
+> **Name:**
+>   ListPets
 
 ### Exporting bot-definition
 
