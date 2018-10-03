@@ -2,7 +2,7 @@
 
 ## Install pip requirements
 cd "$(dirname "$0")"
-ACTIVATE_PATH=~/.virtualenvs/dev-python2.7.13/bin/activate
+ACTIVATE_PATH=venv/bin/activate
 source ${ACTIVATE_PATH}
 pip install -r requirements.txt
 

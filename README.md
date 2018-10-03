@@ -54,5 +54,7 @@ You can run `aws lambda update-function-code --function-name "get_pet_info" --zi
 
 ### Exporting bot-definition
 
-1. Change the `ACTIVATE_PATH=` line to a python2.7 interpreter or virtualenv
+1. Install virtualenv tool globally `pip install virtualenv`
+1. Create virtual environment in the project root by running the following command: `virtualenv venv`.<br/>
+**Note:** If you want to create virtual environment with different name, you have to modify `ACTIVATE_PATH=` in `export-chatbot.sh`.
 2. Run the `export-chatbot.sh` script to generate the `bot-definition-export.json` file in the `lex/` directory
